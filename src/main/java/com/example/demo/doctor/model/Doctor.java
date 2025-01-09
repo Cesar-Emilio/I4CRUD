@@ -1,9 +1,10 @@
-package com.example.demo.Patient.model;
+package com.example.demo.doctor.model;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "patients")
-public class Patient {
+@Table(name = "doctors")
+public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,35 +21,56 @@ public class Patient {
     @Column(name = "phone",columnDefinition = "VARCHAR(15)")
     private String phone;
 
+
+    @Column(name = "age",columnDefinition = "INTEGER")
+    private int age;
+    @Column(name = "speciality",columnDefinition = "VARCHAR(30)")
+    private String speciality;
+
     @Column(name = "status",columnDefinition = "BOOL DEFAULT TRUE")
     private boolean status;
 
-    public Patient() {
+    public Doctor() {
     }
 
-    public Patient(Long id, String name, String last_name, String curp, String phone, boolean status) {
+    public Doctor(String name, String speciality) {
+        this.name = name;
+        this.speciality = speciality;
+    }
+
+    public Doctor(Long id, String name, String last_name, String curp, String phone, int age, String speciality, boolean status) {
         this.id = id;
         this.name = name;
         this.last_name = last_name;
         this.curp = curp;
         this.phone = phone;
+        this.age = age;
+        this.speciality = speciality;
         this.status = status;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
 
+    public String getSpeciality() {
+        return speciality;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
     }
 
     public String getLast_name() {
@@ -75,6 +97,14 @@ public class Patient {
         this.phone = phone;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public boolean isStatus() {
         return status;
     }
@@ -83,4 +113,3 @@ public class Patient {
         this.status = status;
     }
 }
-

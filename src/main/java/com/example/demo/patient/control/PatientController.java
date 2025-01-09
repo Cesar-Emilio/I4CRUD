@@ -1,5 +1,5 @@
-package com.example.demo.Patient.control;
-import com.example.demo.Patient.model.Patient;
+package com.example.demo.patient.control;
+import com.example.demo.patient.model.Patient;
 import com.example.demo.utils.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

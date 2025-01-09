@@ -1,7 +1,7 @@
-package com.example.demo.Patient.control;
+package com.example.demo.patient.control;
 
-import com.example.demo.Patient.model.Patient;
-import com.example.demo.Patient.model.PatientRepository;
+import com.example.demo.patient.model.Patient;
+import com.example.demo.patient.model.PatientRepository;
 import com.example.demo.utils.Message;
 import com.example.demo.utils.TypesResponse;
 import org.slf4j.Logger;
