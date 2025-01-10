@@ -98,6 +98,7 @@ public class PatientService {
         PatientUpdated.setLast_name(Patient.getLast_name());
         PatientUpdated.setCurp(Patient.getCurp());
         PatientUpdated.setPhone(Patient.getPhone());
+        PatientUpdated.setAllergies(Patient.getAllergies());
 
         PatientUpdated = PatientRepository.saveAndFlush(PatientUpdated);
         if(PatientUpdated == null){
@@ -118,6 +119,7 @@ public class PatientService {
         PatientUpdated.setLast_name(PatientUpdated.getLast_name());
         PatientUpdated.setCurp(PatientUpdated.getCurp());
         PatientUpdated.setPhone(PatientUpdated.getPhone());
+        PatientUpdated.setAllergies(PatientUpdated.getAllergies());
         PatientUpdated.setStatus(!PatientUpdated.isStatus());
 
         PatientUpdated = PatientRepository.saveAndFlush(PatientUpdated);
@@ -127,8 +129,4 @@ public class PatientService {
         logger.info("La actualización ha sido realizada correctamente");
         return new ResponseEntity<>(new Message(Patient,"La Patienta se actualizó correctamente",TypesResponse.SUCCESS),HttpStatus.OK);
     }
-    public Patient getLastRegisteredPatient() {
-        return lastRegisteredPatient;
-    }
-
 }

@@ -20,10 +20,12 @@ public class PatientController {
     public ResponseEntity<Message> getAllPeople() {
         return PatientService.findAll();
     }
+
     @GetMapping("/allActive")
     public ResponseEntity<Message> getAllActivePeople() {
         return PatientService.findAllActive();
     }
+
     @GetMapping("/allInactive")
     public ResponseEntity<Message> getAllInactivePeople() {
         return PatientService.findAllInactive();
@@ -43,6 +45,4 @@ public class PatientController {
     public ResponseEntity<Message> changeStatus(@RequestBody Patient Patient) {
         return PatientService.changeStatus(Patient);
     }
-
-
 }
