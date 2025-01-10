@@ -1,5 +1,8 @@
 package com.example.demo.patient.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "patients")
@@ -20,18 +23,23 @@ public class Patient {
     @Column(name = "phone",columnDefinition = "VARCHAR(15)")
     private String phone;
 
+    @OneToMany(mappedBy = "patient")
+    @JsonIgnore
+    private List<Allergies> allergies;
+
     @Column(name = "status",columnDefinition = "BOOL DEFAULT TRUE")
     private boolean status;
 
     public Patient() {
     }
 
-    public Patient(Long id, String name, String last_name, String curp, String phone, boolean status) {
+    public Patient(Long id, String name, String last_name, String curp, String phone, List<Allergies> allergies, boolean status) {
         this.id = id;
         this.name = name;
         this.last_name = last_name;
         this.curp = curp;
         this.phone = phone;
+        this.allergies = allergies;
         this.status = status;
     }
 
@@ -73,6 +81,14 @@ public class Patient {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<Allergies> getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(List<Allergies> allergies) {
+        this.allergies = allergies;
     }
 
     public boolean isStatus() {
