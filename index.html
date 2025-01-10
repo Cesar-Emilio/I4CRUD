@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD RIS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+        }
+        nav {
+            background-color: #333;
+            padding: 15px;
+            color: white;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        section {
+            display: none;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .active {
+            display: block;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="number"], input[type="date"], select, input[type="submit"] {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+        }
+        input[type="submit"] {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        table th, table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .actions button {
+            padding: 6px 12px;
+            margin: 5px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .actions button:hover {
+            background-color: #e68900;
+        }
+        .actions .delete {
+            background-color: #f44336;
+        }
+        .actions .delete:hover {
+            background-color: #e53935;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="#" onclick="showSection('doctor')">Doctor</a>
+    <a href="#" onclick="showSection('office')">Office</a>
+    <a href="#" onclick="showSection('patient')">Patient</a>
+    <a href="#" onclick="showSection('supply')">Supply</a>
+</nav>
+
+<!-- Doctor Section -->
+<section id="doctor" class="section-content">
+    <h1 class="section-title">Doctor CRUD</h1>
+    <form id="doctorForm">
+        <input type="text" id="doctorName" placeholder="Nombre" required>
+        <input type="text" id="doctorLastName" placeholder="Apellido" required>
+        <input type="text" id="doctorCurp" placeholder="CURP" required>
+        <input type="text" id="doctorPhone" placeholder="Teléfono" required>
+        <input type="number" id="doctorAge" placeholder="Edad" required>
+        <input type="text" id="doctorSpeciality" placeholder="Especialidad" required>
+        <select id="doctorStatus">
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+        </select>
+        <input type="submit" value="Agregar Doctor">
+    </form>
+
+    <button onclick="getDoctors()">Ver Doctores</button>
+    <table id="doctorTable">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>CURP</th>
+            <th>Teléfono</th>
+            <th>Edad</th>
+            <th>Especialidad</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody id="doctorList"></tbody>
+    </table>
+</section>
+
+<!-- Modal for Editing Doctor -->
+<div id="editDoctorModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Editar Doctor</h2>
+        <form id="editDoctorForm">
+            <input type="text" id="editDoctorName" placeholder="Nombre" required>
+            <input type="text" id="editDoctorLastName" placeholder="Apellido" required>
+            <input type="text" id="editDoctorCurp" placeholder="CURP" required>
+            <input type="text" id="editDoctorPhone" placeholder="Teléfono" required>
+            <input type="number" id="editDoctorAge" placeholder="Edad" required>
+            <input type="text" id="editDoctorSpeciality" placeholder="Especialidad" required>
+            <select id="editDoctorStatus">
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+            </select>
+            <input type="submit" value="Guardar Cambios">
+        </form>
+    </div>
+</div>
+
+<!-- Patient Section -->
+<section id="patient" class="section-content">
+    <h1 class="section-title">Patient CRUD</h1>
+    <form id="patientForm">
+        <input type="text" id="patientName" placeholder="Nombre" required>
+        <input type="text" id="patientLastName" placeholder="Apellido" required>
+        <input type="text" id="patientCurp" placeholder="CURP" required>
+        <input type="text" id="patientPhone" placeholder="Teléfono" required>
+        <input type="number" id="patientAge" placeholder="Edad" required>
+        <input type="text" id="patientDisease" placeholder="Enfermedad" required>
+        <select id="patientStatus">
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+        </select>
+        <input type="submit" value="Agregar Paciente">
+    </form>
+
+    <button onclick="getPatients()">Ver Pacientes</button>
+    <table id="patientTable">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>CURP</th>
+            <th>Teléfono</th>
+            <th>Edad</th>
+            <th>Enfermedad</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody id="patientList"></tbody>
+    </table>
+</section>
+
+<!-- Modal for Editing Patient -->
+<div id="editPatientModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closePatientModal()">&times;</span>
+        <h2>Editar Paciente</h2>
+        <form id="editPatientForm">
+            <input type="text" id="editPatientName" placeholder="Nombre" required>
+            <input type="text" id="editPatientLastName" placeholder="Apellido" required>
+            <input type="text" id="editPatientCurp" placeholder="CURP" required>
+            <input type="text" id="editPatientPhone" placeholder="Teléfono" required>
+            <input type="number" id="editPatientAge" placeholder="Edad" required>
+            <input type="text" id="editPatientDisease" placeholder="Enfermedad" required>
+            <select id="editPatientStatus">
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+            </select>
+            <input type="submit" value="Guardar Cambios">
+        </form>
+    </div>
+</div>
+
+<script>
+    let currentDoctorId = null;
+    let currentPatientId = null;
+
+    // Función para mostrar las secciones
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(sectionId).classList.add('active');
+    }
+
+    // Funciones para manejar doctores
+    document.getElementById('doctorForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const doctor = {
+            name: document.getElementById('doctorName').value,
+            lastName: document.getElementById('doctorLastName').value,
+            curp: document.getElementById('doctorCurp').value,
+            phone: document.getElementById('doctorPhone').value,
+            age: document.getElementById('doctorAge').value,
+            speciality: document.getElementById('doctorSpeciality').value,
+            status: document.getElementById('doctorStatus').value === 'true'
+        };
+
+        fetch('http://localhost:8080/doctor/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(doctor)
+        }).then(response => response.json())
+            .then(data => alert("actualizad"))
+            .catch(error => console.error('Error:', error));
+    });
+
+    function getDoctors() {
+        fetch('http://localhost:8080/doctor/all')
+            .then(response => response.json())
+            .then(data => {
+                const doctorList = document.getElementById('doctorList');
+                doctorList.innerHTML = '';
+                data.result.forEach(doctor => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${doctor.name}</td>
+                        <td>${doctor.lastName}</td>
+                        <td>${doctor.curp}</td>
+                        <td>${doctor.phone}</td>
+                        <td>${doctor.age}</td>
+                        <td>${doctor.speciality}</td>
+                        <td>${doctor.status ? 'Activo' : 'Inactivo'}</td>
+                        <td class="actions">
+                            <button onclick="editDoctor(${doctor.id})">Editar</button>
+                            <button class="delete" onclick="deleteDoctor(${doctor.id})">Eliminar</button>
+                        </td>
+                    `;
+                    doctorList.appendChild(row);
+                });
+            });
+    }
+
+    function editDoctor(id) {
+        currentDoctorId = id;
+        fetch(`http://localhost:8080/doctor/${id}`)
+            .then(response => response.json())
+            .then(doctor => {
+                document.getElementById('editDoctorName').value = doctor.name;
+                document.getElementById('editDoctorLastName').value = doctor.last_name;
+                document.getElementById('editDoctorCurp').value = doctor.curp;
+                document.getElementById('editDoctorPhone').value = doctor.phone;
+                document.getElementById('editDoctorAge').value = doctor.age;
+                document.getElementById('editDoctorSpeciality').value = doctor.speciality;
+                document.getElementById('editDoctorStatus').value = doctor.status ? 'true' : 'false';
+                document.getElementById('editDoctorModal').style.display = 'block';
+            });
+    }
+
+    document.getElementById('editDoctorForm').addEventListener('submit', function(event){
+        event.preventDefault();
+        const updatedDoctor = {
+            name: document.getElementById('editDoctorName').value,
+            lastName: document.getElementById('editDoctorLastName').value,
+            curp: document.getElementById('editDoctorCurp').value,
+            phone: document.getElementById('editDoctorPhone').value,
+            age: document.getElementById('editDoctorAge').value,
+            speciality: document.getElementById('editDoctorSpeciality').value,
+            status: document.getElementById('editDoctorStatus').value === 'true'
+        };
+
+        fetch(`http://localhost:8080/doctor/update/${currentDoctorId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedDoctor)
+        }).then(response => response.json())
+            .then(data => alert("actualizado"))
+            .catch(error => console.error('Error:', error));
+
+        closeModal();
+    });
+
+    function closeModal() {
+        document.getElementById('editDoctorModal').style.display = 'none';
+    }
+
+    function deleteDoctor(id) {
+        fetch(`http://localhost:8080/doctor/delete/${id}`, {
+            method: 'DELETE'
+        }).then(response => response.json())
+            .then(data => alert("actualizad"))
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Funciones para manejar pacientes
+    document.getElementById('patientForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const patient = {
+            name: document.getElementById('patientName').value,
+            last_name: document.getElementById('patientLastName').value,
+            curp: document.getElementById('patientCurp').value,
+            phone: document.getElementById('patientPhone').value,
+            age: document.getElementById('patientAge').value,
+            disease: document.getElementById('patientDisease').value,
+            status: document.getElementById('patientStatus').value === 'true'
+        };
+
+        console.log(patient)
+
+        fetch('http://localhost:8080/patient/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(patient)
+        }).then(response => response.json())
+            .then(data => alert("actualizad"))
+            .catch(error => console.error('Error:', error));
+    });
+
+    function getPatients() {
+        fetch('http://localhost:8080/patient/all')
+            .then(response => response.json())
+            .then(data => {
+                const patientList = document.getElementById('patientList');
+                patientList.innerHTML = '';
+                data.result.forEach(patient => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${patient.name}</td>
+                        <td>${patient.lastName}</td>
+                        <td>${patient.curp}</td>
+                        <td>${patient.phone}</td>
+                        <td>${patient.age}</td>
+                        <td>${patient.disease}</td>
+                        <td>${patient.status ? 'Activo' : 'Inactivo'}</td>
+                        <td class="actions">
+                            <button onclick="editPatient(${patient.id})">Editar</button>
+                        </td>
+                    `;
+                    patientList.appendChild(row);
+                });
+            });
+    }
+
+    function editPatient(id) {
+        currentPatientId = id;
+        fetch(`http://localhost:8080/patient/${id}`)
+            .then(response => response.json())
+            .then(patient => {
+                document.getElementById('editPatientName').value = patient.name;
+                document.getElementById('editPatientLastName').value = patient.lastName;
+                document.getElementById('editPatientCurp').value = patient.curp;
+                document.getElementById('editPatientPhone').value = patient.phone;
+                document.getElementById('editPatientAge').value = patient.age;
+                document.getElementById('editPatientDisease').value = patient.disease;
+                document.getElementById('editPatientStatus').value = patient.status ? 'true' : 'false';
+                document.getElementById('editPatientModal').style.display = 'block';
+            });
+    }
+
+    document.getElementById('editPatientForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const updatedPatient = {
+            name: document.getElementById('editPatientName').value,
+            lastName: document.getElementById('editPatientLastName').value,
+            curp: document.getElementById('editPatientCurp').value,
+            phone: document.getElementById('editPatientPhone').value,
+            age: document.getElementById('editPatientAge').value,
+            disease: document.getElementById('editPatientDisease').value,
+            status: document.getElementById('editPatientStatus').value === 'true'
+        };
+
+        fetch(`http://localhost:8080/patient/update/${currentPatientId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedPatient)
+        }).then(response => response.json())
+            .then(data => alert("actualizad"))
+            .catch(error => console.error('Error:', error));
+
+        closePatientModal();
+    });
+
+    function closePatientModal() {
+        document.getElementById('editPatientModal').style.display = 'none';
+    }
+
+    function deletePatient(id) {
+        fetch(`http://localhost:8080/patient/delete/${id}`, {
+            method: 'DELETE'
+        }).then(response => response.json())
+            .then(data => alert("actualizad"))
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+</body>
+</html>
