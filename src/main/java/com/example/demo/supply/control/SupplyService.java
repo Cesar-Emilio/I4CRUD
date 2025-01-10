@@ -31,15 +31,15 @@ public class SupplyService {
     @Transactional(readOnly = true)
     public ResponseEntity<Message> findAll() {
         List<Supply> supplies = supplyRepository.findAll();
-        logger.info("Supply list fetched successfully");
-        return new ResponseEntity<>(new Message(supplies, "Supply list", TypesResponse.SUCCESS), HttpStatus.OK);
+        logger.info("Suministros obtenidos correctamente");
+        return new ResponseEntity<>(new Message(supplies, "Lista de suministros", TypesResponse.SUCCESS), HttpStatus.OK);
     }
 
     @Transactional
     public ResponseEntity<Message> saveSupply(Supply supply) {
         supplyRepository.save(supply);
-        logger.info("Supply saved successfully");
-        return new ResponseEntity<>(new Message(null, "Supply added", TypesResponse.SUCCESS), HttpStatus.CREATED);
+        logger.info("Suministro guardado correctamente");
+        return new ResponseEntity<>(new Message(null, "Suministro añadido", TypesResponse.SUCCESS), HttpStatus.CREATED);
     }
 
     @Transactional
@@ -52,11 +52,11 @@ public class SupplyService {
             existingSupply.setQuantity(supply.getQuantity());
             existingSupply.setStatus(supply.isStatus());
             supplyRepository.save(existingSupply);
-            logger.info("Supply updated successfully");
-            return new ResponseEntity<>(new Message(null, "Supply updated", TypesResponse.SUCCESS), HttpStatus.OK);
+            logger.info("Suministro actualizado correctamente");
+            return new ResponseEntity<>(new Message(null, "Suministro actualizado", TypesResponse.SUCCESS), HttpStatus.OK);
         } else {
-            logger.warn("Supply not found");
-            return new ResponseEntity<>(new Message(null, "Supply not found", TypesResponse.ERROR), HttpStatus.NOT_FOUND);
+            logger.warn("Suministro no encontrado");
+            return new ResponseEntity<>(new Message(null, "Suministro no encontrado", TypesResponse.ERROR), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -64,11 +64,11 @@ public class SupplyService {
     public ResponseEntity<Message> deleteSupply(Long id) {
         if (supplyRepository.existsById(id)) {
             supplyRepository.deleteById(id);
-            logger.info("Supply deleted successfully");
-            return new ResponseEntity<>(new Message(null, "Supply deleted", TypesResponse.SUCCESS), HttpStatus.OK);
+            logger.info("Suministro eliminado correctamente");
+            return new ResponseEntity<>(new Message(null, "Suministro eliminado", TypesResponse.SUCCESS), HttpStatus.OK);
         } else {
-            logger.warn("Supply not found");
-            return new ResponseEntity<>(new Message(null, "Supply not found", TypesResponse.ERROR), HttpStatus.NOT_FOUND);
+            logger.warn("Suministro no encontrado");
+            return new ResponseEntity<>(new Message(null, "Suministro no encontrado", TypesResponse.ERROR), HttpStatus.NOT_FOUND);
         }
     }
 }
