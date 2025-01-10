@@ -13,7 +13,7 @@ public class Doctor {
     private String name;
 
     @Column(name = "last_name",columnDefinition = "VARCHAR(30)")
-    private String last_name;
+    private String lastName;
 
     @Column(name = "curp",columnDefinition = "VARCHAR(18)")
     private String curp;
@@ -38,10 +38,10 @@ public class Doctor {
         this.speciality = speciality;
     }
 
-    public Doctor(Long id, String name, String last_name, String curp, String phone, int age, String speciality, boolean status) {
+    public Doctor(Long id, String name, String lastName, String curp, String phone, int age, String speciality, boolean status) {
         this.id = id;
         this.name = name;
-        this.last_name = last_name;
+        this.lastName = lastName;
         this.curp = curp;
         this.phone = phone;
         this.age = age;
@@ -73,12 +73,12 @@ public class Doctor {
         this.speciality = speciality;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getCurp() {

@@ -1,4 +1,6 @@
 package com.example.demo.office.model;
 
-public class OfficeRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface OfficeRepository extends JpaRepository<Office, Long> {
 }

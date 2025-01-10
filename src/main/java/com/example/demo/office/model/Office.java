@@ -14,7 +14,7 @@ public class Office {
     private Long id;
 
     @Column(name = "consultation_date",columnDefinition = "DATE")
-    private Date date_of_creation;
+    private Date dateOfCreation;
 
     @Column(name = "diagnosis",columnDefinition = "VARCHAR(100)")
     private String diagnosis;
@@ -36,9 +36,9 @@ public class Office {
     public Office() {
     }
 
-    public Office(Long id, Date date_of_creation, String diagnosis, String treatment, boolean status, Doctor doctor, Patient patient) {
+    public Office(Long id, Date dateOfCreation, String diagnosis, String treatment, boolean status, Doctor doctor, Patient patient) {
         this.id = id;
-        this.date_of_creation = date_of_creation;
+        this.dateOfCreation = dateOfCreation;
         this.diagnosis = diagnosis;
         this.treatment = treatment;
         this.status = status;
@@ -54,12 +54,12 @@ public class Office {
         this.id = id;
     }
 
-    public Date getDate_of_creation() {
-        return date_of_creation;
+    public Date getDateOfCreation() {
+        return dateOfCreation;
     }
 
-    public void setDate_of_creation(Date date_of_creation) {
-        this.date_of_creation = date_of_creation;
+    public void setDateOfCreation(Date dateOfCreation) {
+        this.dateOfCreation = dateOfCreation;
     }
 
     public String getDiagnosis() {
