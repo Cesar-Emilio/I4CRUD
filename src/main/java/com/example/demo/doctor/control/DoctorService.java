@@ -1,7 +1,7 @@
-    package com.example.demo.doctor.control;
+    package com.example.demo.Doctor.control;
 
-    import com.example.demo.doctor.model.Doctor;
-    import com.example.demo.doctor.model.DoctorRepository;
+    import com.example.demo.Doctor.model.Doctor;
+    import com.example.demo.Doctor.model.DoctorRepository;
     import com.example.demo.utils.Message;
     import com.example.demo.utils.TypesResponse;
     import org.slf4j.Logger;

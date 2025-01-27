@@ -1,6 +1,6 @@
 package com.example.demo.office.model;
 
-import com.example.demo.doctor.model.Doctor;
+import com.example.demo.Doctor.model.Doctor;
 import com.example.demo.patient.model.Patient;
 import jakarta.persistence.*;
 

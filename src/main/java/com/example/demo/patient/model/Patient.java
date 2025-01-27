@@ -23,6 +23,9 @@ public class Patient {
     @Column(name = "phone",columnDefinition = "VARCHAR(15)")
     private String phone;
 
+    @Column(name = "age",columnDefinition = "INT")
+    private int age;
+
     @OneToMany(mappedBy = "patient")
     @JsonIgnore
     private List<Allergies> allergies;
@@ -33,12 +36,13 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(Long id, String name, String last_name, String curp, String phone, List<Allergies> allergies, boolean status) {
+    public Patient(Long id, String name, String last_name, String curp, String phone, int age, List<Allergies> allergies, boolean status) {
         this.id = id;
         this.name = name;
         this.last_name = last_name;
         this.curp = curp;
         this.phone = phone;
+        this.age = age;
         this.allergies = allergies;
         this.status = status;
     }
@@ -97,6 +101,14 @@ public class Patient {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
 

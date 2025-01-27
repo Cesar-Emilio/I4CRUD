@@ -1,6 +1,6 @@
-package com.example.demo.doctor.control;
+package com.example.demo.Doctor.control;
 
-import com.example.demo.doctor.model.Doctor;
+import com.example.demo.Doctor.model.Doctor;
 import com.example.demo.utils.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

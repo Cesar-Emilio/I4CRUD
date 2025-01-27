@@ -99,6 +99,7 @@ public class PatientService {
         PatientUpdated.setCurp(Patient.getCurp());
         PatientUpdated.setPhone(Patient.getPhone());
         PatientUpdated.setAllergies(Patient.getAllergies());
+        PatientUpdated.setAge(Patient.getAge());
 
         PatientUpdated = PatientRepository.saveAndFlush(PatientUpdated);
         if(PatientUpdated == null){

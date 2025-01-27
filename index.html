@@ -250,6 +250,70 @@
     </div>
 </div>
 
+<!-- Office Section -->
+<section id="office" class="section-content">
+    <h1 class="section-title">Office CRUD</h1>
+    <form id="officeForm">
+        <input type="date" id="officeDate" placeholder="Fecha de Consulta" required>
+        <input type="text" id="officeDiagnosis" placeholder="Diagnóstico" maxlength="100" required>
+        <input type="text" id="officeTreatment" placeholder="Tratamiento" maxlength="100" required>
+        <select id="officeStatus" required>
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+        </select>
+        <select id="officeDoctor" required>
+            <option value="">Selecciona un Doctor</option>
+            <!-- Opciones dinámicas se cargarán aquí -->
+        </select>
+        <select id="officePatient" required>
+            <option value="">Selecciona un Paciente</option>
+            <!-- Opciones dinámicas se cargarán aquí -->
+        </select>
+        <input type="submit" value="Agregar Consulta">
+    </form>
+
+    <button onclick="getOffices()">Ver Consultas</button>
+    <table id="officeTable">
+        <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Diagnóstico</th>
+            <th>Tratamiento</th>
+            <th>Estado</th>
+            <th>Doctor</th>
+            <th>Paciente</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody id="officeList"></tbody>
+    </table>
+</section>
+
+<!-- Modal for Editing Office -->
+<div id="editOfficeModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeOfficeModal()">&times;</span>
+        <h2>Editar Consulta</h2>
+        <form id="editOfficeForm">
+            <input type="date" id="editOfficeDate" placeholder="Fecha de Consulta" required>
+            <input type="text" id="editOfficeDiagnosis" placeholder="Diagnóstico" maxlength="100" required>
+            <input type="text" id="editOfficeTreatment" placeholder="Tratamiento" maxlength="100" required>
+            <select id="editOfficeStatus" required>
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+            </select>
+            <select id="editOfficeDoctor" required>
+                <option value="">Selecciona un Doctor</option>
+                <!-- Opciones dinámicas se cargarán aquí -->
+            </select>
+            <select id="editOfficePatient" required>
+                <option value="">Selecciona un Paciente</option>
+                <!-- Opciones dinámicas se cargarán aquí -->
+            </select>
+            <input type="submit" value="Guardar Cambios">
+        </form>
+    </div>
+</div>
 <script>
     let currentDoctorId = null;
     let currentPatientId = null;
@@ -264,7 +328,7 @@
     }
 
     // Funciones para manejar doctores
-    document.getElementById('doctorForm').addEventListener('submit', function(event) {
+    document.getElementById('doctorForm').addEventListener('submit', function (event) {
         event.preventDefault();
         const doctor = {
             name: document.getElementById('doctorName').value,
@@ -278,7 +342,7 @@
 
         fetch('http://localhost:8080/doctor/add', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(doctor)
         }).then(response => response.json())
             .then(data => alert("actualizad"))
@@ -316,18 +380,18 @@
         fetch(`http://localhost:8080/doctor/${id}`)
             .then(response => response.json())
             .then(doctor => {
-                document.getElementById('editDoctorName').value = doctor.name;
-                document.getElementById('editDoctorLastName').value = doctor.last_name;
-                document.getElementById('editDoctorCurp').value = doctor.curp;
-                document.getElementById('editDoctorPhone').value = doctor.phone;
-                document.getElementById('editDoctorAge').value = doctor.age;
-                document.getElementById('editDoctorSpeciality').value = doctor.speciality;
-                document.getElementById('editDoctorStatus').value = doctor.status ? 'true' : 'false';
+                document.getElementById('editDoctorName');
+                document.getElementById('editDoctorLastName');
+                document.getElementById('editDoctorCurp');
+                document.getElementById('editDoctorPhone');
+                document.getElementById('editDoctorAge');
+                document.getElementById('editDoctorSpeciality');
+                document.getElementById('editDoctorStatus');
                 document.getElementById('editDoctorModal').style.display = 'block';
             });
     }
 
-    document.getElementById('editDoctorForm').addEventListener('submit', function(event){
+    document.getElementById('editDoctorForm').addEventListener('submit', function (event) {
         event.preventDefault();
         const updatedDoctor = {
             name: document.getElementById('editDoctorName').value,
@@ -341,7 +405,7 @@
 
         fetch(`http://localhost:8080/doctor/update/${currentDoctorId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(updatedDoctor)
         }).then(response => response.json())
             .then(data => alert("actualizado"))
@@ -363,7 +427,7 @@
     }
 
     // Funciones para manejar pacientes
-    document.getElementById('patientForm').addEventListener('submit', function(event) {
+    document.getElementById('patientForm').addEventListener('submit', function (event) {
         event.preventDefault();
         const patient = {
             name: document.getElementById('patientName').value,
@@ -379,7 +443,7 @@
 
         fetch('http://localhost:8080/patient/save', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(patient)
         }).then(response => response.json())
             .then(data => alert("actualizad"))
@@ -396,7 +460,7 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${patient.name}</td>
-                        <td>${patient.lastName}</td>
+                        <td>${patient.last_name}</td>
                         <td>${patient.curp}</td>
                         <td>${patient.phone}</td>
                         <td>${patient.age}</td>
@@ -416,18 +480,18 @@
         fetch(`http://localhost:8080/patient/${id}`)
             .then(response => response.json())
             .then(patient => {
-                document.getElementById('editPatientName').value = patient.name;
-                document.getElementById('editPatientLastName').value = patient.lastName;
-                document.getElementById('editPatientCurp').value = patient.curp;
-                document.getElementById('editPatientPhone').value = patient.phone;
-                document.getElementById('editPatientAge').value = patient.age;
-                document.getElementById('editPatientDisease').value = patient.disease;
+                document.getElementById('editPatientName');
+                document.getElementById('editPatientLastName');
+                document.getElementById('editPatientCurp');
+                document.getElementById('editPatientPhone');
+                document.getElementById('editPatientAge');
+                document.getElementById('editPatientDisease');
                 document.getElementById('editPatientStatus').value = patient.status ? 'true' : 'false';
                 document.getElementById('editPatientModal').style.display = 'block';
             });
     }
 
-    document.getElementById('editPatientForm').addEventListener('submit', function(event) {
+    document.getElementById('editPatientForm').addEventListener('submit', function (event) {
         event.preventDefault();
         const updatedPatient = {
             name: document.getElementById('editPatientName').value,
@@ -441,7 +505,7 @@
 
         fetch(`http://localhost:8080/patient/update/${currentPatientId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(updatedPatient)
         }).then(response => response.json())
             .then(data => alert("actualizad"))
@@ -461,6 +525,120 @@
             .then(data => alert("actualizad"))
             .catch(error => console.error('Error:', error));
     }
+
+        let currentOfficeId = null;
+
+        // Función para mostrar las secciones
+        function showSection(sectionId) {
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => {
+        section.classList.remove('active');
+    });
+        document.getElementById(sectionId).classList.add('active');
+    }
+
+        // Función para manejar el formulario de agregar oficina
+        document.getElementById('officeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const office = {
+        name: document.getElementById('officeName').value,
+        department: document.getElementById('officeDepartment').value,
+        phone: document.getElementById('officePhone').value,
+        status: document.getElementById('officeStatus').value === 'true'
+    };
+
+        fetch('http://localhost:8080/office/add', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(office)
+    }).then(response => response.json())
+        .then(data => {
+        alert("Oficina agregada exitosamente.");
+        getOffices();
+    })
+        .catch(error => console.error('Error:', error));
+    });
+
+        // Función para obtener la lista de oficinas
+        function getOffices() {
+        fetch('http://localhost:8080/office/all')
+            .then(response => response.json())
+            .then(data => {
+                const officeList = document.getElementById('officeList');
+                officeList.innerHTML = '';
+                data.result.forEach(office => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${office.name}</td>
+                        <td>${office.department}</td>
+                        <td>${office.phone}</td>
+                        <td>${office.status ? 'Activa' : 'Inactiva'}</td>
+                        <td class="actions">
+                            <button onclick="editOffice(${office.id})">Editar</button>
+                            <button class="delete" onclick="deleteOffice(${office.id})">Eliminar</button>
+                        </td>
+                    `;
+                    officeList.appendChild(row);
+                });
+            });
+    }
+
+        // Función para editar oficina
+        function editOffice(id) {
+        currentOfficeId = id;
+        fetch(`http://localhost:8080/office/${id}`)
+        .then(response => response.json())
+        .then(office => {
+        document.getElementById('editOfficeName').value = office.name;
+        document.getElementById('editOfficeDepartment').value = office.department;
+        document.getElementById('editOfficePhone').value = office.phone;
+        document.getElementById('editOfficeStatus').value = office.status ? 'true' : 'false';
+        document.getElementById('editOfficeModal').style.display = 'block';
+    });
+    }
+
+        document.getElementById('editOfficeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const updatedOffice = {
+        name: document.getElementById('editOfficeName').value,
+        department: document.getElementById('editOfficeDepartment').value,
+        phone: document.getElementById('editOfficePhone').value,
+        status: document.getElementById('editOfficeStatus').value === 'true'
+    };
+
+        fetch(`http://localhost:8080/office/update/${currentOfficeId}`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(updatedOffice)
+    }).then(response => response.json())
+        .then(data => {
+        alert("Oficina actualizada exitosamente.");
+        getOffices();
+        closeModal();
+    })
+        .catch(error => console.error('Error:', error));
+    });
+
+        // Función para cerrar el modal de edición
+        function closeModal() {
+        document.getElementById('editOfficeModal').style.display = 'none';
+    }
+
+        // Función para eliminar oficina
+        function deleteOffice(id) {
+        fetch(`http://localhost:8080/office/delete/${id}`, {
+            method: 'DELETE'
+        }).then(response => response.json())
+            .then(data => {
+                alert("Oficina eliminada exitosamente.");
+                getOffices();
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+        // Inicialización: cargar la lista de oficinas al inicio
+        document.addEventListener('DOMContentLoaded', getOffices);
+
 </script>
 </body>
 </html>
